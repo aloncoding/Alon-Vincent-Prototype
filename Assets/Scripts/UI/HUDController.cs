@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Spellbound.Tower;
@@ -16,9 +17,9 @@ namespace Spellbound.UI
         public WaveManager waveManager;
 
         public Image hpFillImage;
-        public Text waveText;
-        public Text scoreText;
-        public Text comboText;
+        public TMP_Text waveText;
+        public TMP_Text scoreText;
+        public TMP_Text comboText;
 
         void OnEnable()
         {

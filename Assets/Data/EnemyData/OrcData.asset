@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec5c364cf0767ba47bc170d8b978567a, type: 3}
+  m_Name: OrcData
+  m_EditorClassIdentifier: Assembly-CSharp::Spellbound.Enemies.EnemyData
+  enemyName: Goblin
+  size: 1
+  maxHP: 3
+  moveSpeed: 2
+  damageToTower: 10
+  scoreValue: 150
+  prefab: {fileID: 1266580721561917118, guid: 6cb95454e508a5a498b815a3c195bdf7, type: 3}

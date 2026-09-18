@@ -35,7 +35,7 @@ namespace Spellbound.Spells
         private readonly List<SpellSymbol> _currentSequence = new List<SpellSymbol>();
         private Coroutine _commitRoutine;
 
-        void OnEnable()
+        void Start()
         {
             InputManager.Instance.OnSymbolEntered += HandleSymbol;
             InputManager.Instance.OnSequenceCleared += HandleTimeoutClear;

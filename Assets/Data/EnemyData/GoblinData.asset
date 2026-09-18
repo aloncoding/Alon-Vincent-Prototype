@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ec5c364cf0767ba47bc170d8b978567a, type: 3}
-  m_Name: EnemyData
+  m_Name: GoblinData
   m_EditorClassIdentifier: Assembly-CSharp::Spellbound.Enemies.EnemyData
   enemyName: Goblin
   size: 0
   maxHP: 1
-  moveSpeed: 2
-  damageToTower: 1
+  moveSpeed: 3
+  damageToTower: 5
   scoreValue: 100
-  prefab: {fileID: 0}
+  prefab: {fileID: 6681276527596998925, guid: 79e0221e83c260143b467a5b22bad703, type: 3}

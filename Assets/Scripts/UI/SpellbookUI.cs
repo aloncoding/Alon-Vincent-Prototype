@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Spellbound.Spells;
@@ -14,7 +15,7 @@ namespace Spellbound.UI
     {
         public Spellbook spellbook;
         public SpellCaster spellCaster;
-        [Tooltip("Prefab with an Image on the root and two child Text objects named 'Name' and 'Pattern'.")]
+        [Tooltip("Prefab with an Image on the root and two child TMP_Text objects named 'Name' and 'Pattern'.")]
         public GameObject rowPrefab;
         public Transform rowContainer;
 
@@ -25,8 +26,8 @@ namespace Spellbound.UI
             foreach (var spell in spellbook.unlockedSpells)
             {
                 GameObject row = Instantiate(rowPrefab, rowContainer);
-                row.transform.Find("Name").GetComponent<Text>().text = spell.spellName.ToUpper();
-                row.transform.Find("Pattern").GetComponent<Text>().text = spell.MorseDisplay;
+                row.transform.Find("Name").GetComponent<TMP_Text>().text = spell.spellName.ToUpper();
+                row.transform.Find("Pattern").GetComponent<TMP_Text>().text = spell.MorseDisplay;
                 _rows[spell] = row;
             }
             spellCaster.OnSequenceChanged += HighlightMatches;

@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 using Spellbound.Spells;
 
 namespace Spellbound.UI
@@ -13,8 +13,8 @@ namespace Spellbound.UI
     public class InputFeedbackUI : MonoBehaviour
     {
         public SpellCaster spellCaster;
-        public Text currentSequenceText;
-        public Text feedbackText;
+        public TMP_Text currentSequenceText;
+        public TMP_Text feedbackText;
         public float feedbackDisplayTime = 0.8f;
 
         void OnEnable()
