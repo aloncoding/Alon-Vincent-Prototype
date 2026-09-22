@@ -86,7 +86,30 @@ namespace Spellbound.Waves
 
         void SpawnEnemy(SpawnEntry entry)
         {
+            //
+            if (laneManager == null) 
+            {
+                Debug.LogError("laneManager is missing from WaveManager script in Inspector!");
+                return;
+            }
+            //
+
             Lane lane = laneManager.GetLane(entry.laneIndex);
+
+             // 2. Check if the retrieved lane exists
+            if (lane == null) 
+            {
+                Debug.LogError($"Lane at index {entry.laneIndex} could not be found by LaneManager!");
+                return;
+            }
+
+            // 3. Check if enemy data exists
+            if (entry.enemyData == null) 
+            {
+                Debug.LogError("EnemyData is null! Did you forget to assign small/medium/large enemies in WaveManager?");
+                return;
+            }
+
             GameObject go = Instantiate(entry.enemyData.prefab);
             Enemy enemy = go.GetComponent<Enemy>();
             enemy.Initialize(entry.enemyData, lane);

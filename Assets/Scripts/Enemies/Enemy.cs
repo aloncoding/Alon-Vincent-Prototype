@@ -79,6 +79,9 @@ namespace Spellbound.Enemies
             ScoreManager.Instance?.RegisterKill(this, Time.time - _spawnTime);
             _lane.Unregister(this);
             WaveManager.Instance?.NotifyEnemyRemoved();
+
+            //add audio for death!!!
+            
             Destroy(gameObject);
         }
 

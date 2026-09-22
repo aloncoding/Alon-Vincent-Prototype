@@ -15,7 +15,7 @@ MonoBehaviour:
   enemyName: Goblin
   size: 0
   maxHP: 1
-  moveSpeed: 3
+  moveSpeed: 2.5
   damageToTower: 5
   scoreValue: 100
-  prefab: {fileID: 6681276527596998925, guid: 79e0221e83c260143b467a5b22bad703, type: 3}
+  prefab: {fileID: 1463117516961238253, guid: 9552d10b6f8c9dc4c82fff9461dee15e, type: 3}

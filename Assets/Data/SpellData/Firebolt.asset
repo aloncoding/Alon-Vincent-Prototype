@@ -20,6 +20,6 @@ MonoBehaviour:
   slowFactor: 0.5
   slowDuration: 0.5
   healAmount: 0
-  icon: {fileID: 0}
-  castSfx: {fileID: 0}
-  castVfxPrefab: {fileID: 0}
+  icon: {fileID: -7301351176146340671, guid: 471884167c36c9c488c1287a50557c7b, type: 3}
+  castSfx: {fileID: 8300000, guid: c53ed788ef8ead44ba773dc1e4df1330, type: 3}
+  castVfxPrefab: {fileID: 7769336207353039243, guid: 7765761527012ed43805031c1b873771, type: 3}

@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec5c364cf0767ba47bc170d8b978567a, type: 3}
   m_Name: OrcData
   m_EditorClassIdentifier: Assembly-CSharp::Spellbound.Enemies.EnemyData
-  enemyName: Goblin
+  enemyName: Orc
   size: 1
   maxHP: 3
-  moveSpeed: 2
+  moveSpeed: 1
   damageToTower: 10
   scoreValue: 150
-  prefab: {fileID: 1266580721561917118, guid: 6cb95454e508a5a498b815a3c195bdf7, type: 3}
+  prefab: {fileID: 1043478442580530641, guid: 1266c97b209ff8240984382ea0021ff4, type: 3}

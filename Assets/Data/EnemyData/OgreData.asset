@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec5c364cf0767ba47bc170d8b978567a, type: 3}
   m_Name: OgreData
   m_EditorClassIdentifier: Assembly-CSharp::Spellbound.Enemies.EnemyData
-  enemyName: Goblin
+  enemyName: Ogre
   size: 2
   maxHP: 10
-  moveSpeed: 1
+  moveSpeed: 0.5
   damageToTower: 20
   scoreValue: 300
-  prefab: {fileID: 8796835157217751748, guid: e8fd5e746a094be4187e2b4806a3d878, type: 3}
+  prefab: {fileID: 5373458933596215651, guid: 243ecff36ac4d7f43bdb7e240c9d0543, type: 3}

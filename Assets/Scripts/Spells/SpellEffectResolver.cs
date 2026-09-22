@@ -1,3 +1,4 @@
+using UnityEngine;
 using Spellbound.Lanes;
 using Spellbound.Scoring;
 using Spellbound.Tower;
@@ -12,14 +13,25 @@ namespace Spellbound.Spells
     {
         public static void Apply(SpellData spell, Lane lane, ScoreManager scoreManager)
         {
-            if (spell.effectType == SpellEffectType.Heal)
+            if (spell.castVfxPrefab != null)
             {
-                TowerHealth.Instance?.Heal(spell.healAmount);
-                scoreManager?.RegisterSuccessfulCast(spell);
-                return;
+                // Determine a spawn position. For a lane spell, we can spawn it 
+                // at the lane's starting point, or the tower depending on your design.
+                Vector3 spawnPosition = (lane != null) ? lane.spawnPoint.position : Vector3.zero;
+
+                // Instantiate the image/VFX prefab into the game world
+                Object.Instantiate(spell.castVfxPrefab, spawnPosition, Quaternion.identity);
             }
 
+            // if (spell.effectType == SpellEffectType.Heal)
+            // {
+            //     TowerHealth.Instance?.Heal(spell.healAmount);
+            //     scoreManager?.RegisterSuccessfulCast(spell);
+            //     return;
+            // }
+
             if (lane == null) return;
+
 
             switch (spell.effectType)
             {

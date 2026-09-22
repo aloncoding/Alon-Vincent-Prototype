@@ -18,8 +18,8 @@ MonoBehaviour:
   damage: 3
   maxTargets: 3
   slowFactor: 0.5
-  slowDuration: 2
+  slowDuration: 10
   healAmount: 0
-  icon: {fileID: 0}
-  castSfx: {fileID: 0}
-  castVfxPrefab: {fileID: 0}
+  icon: {fileID: -1680432439666424156, guid: 1e55fc4287e1c8243b745cc329d4776f, type: 3}
+  castSfx: {fileID: 8300000, guid: bbbf36444172e4c42a113c01b2bc4ad6, type: 3}
+  castVfxPrefab: {fileID: 1485839732684687211, guid: eb4211808d72c8847959e7506599c2ab, type: 3}
