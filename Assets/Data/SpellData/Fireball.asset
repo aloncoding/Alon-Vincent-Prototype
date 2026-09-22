@@ -20,6 +20,10 @@ MonoBehaviour:
   slowFactor: 0.5
   slowDuration: 10
   healAmount: 0
-  icon: {fileID: -1680432439666424156, guid: 1e55fc4287e1c8243b745cc329d4776f, type: 3}
   castSfx: {fileID: 8300000, guid: bbbf36444172e4c42a113c01b2bc4ad6, type: 3}
   castVfxPrefab: {fileID: 1485839732684687211, guid: eb4211808d72c8847959e7506599c2ab, type: 3}
+  projectilePrefab: {fileID: 2989794420926504003, guid: b4007e96d682dd84ab1b3a8ebf1bdd72, type: 3}
+  projectileSpeed: 10
+  impactVfxPrefab: {fileID: 0}
+  impactSfx: {fileID: 0}
+  icon: {fileID: -1680432439666424156, guid: 1e55fc4287e1c8243b745cc329d4776f, type: 3}

@@ -4,7 +4,10 @@ using UnityEngine;
 
 namespace Spellbound.Core
 {
-    public enum SfxId { Tap, HoldCharge, CastSuccess, Miscast, EnemyDeath, TowerHit }
+    // System-level sounds not tied to a specific spell (input feedback, miscast, wave
+    // clear, etc.). Per-spell cast/impact sounds are played directly via PlayClip()
+    // instead, since they live on the SpellData asset rather than in this fixed list.
+    public enum SfxId { Tap, HoldCharge, Miscast, EnemyDeath, TowerHit, WaveCleared }
 
     [Serializable]
     public struct SfxEntry
@@ -14,9 +17,8 @@ namespace Spellbound.Core
     }
 
     /// <summary>
-    /// Central SFX player. Wire InputManager/SpellCaster events to Play() calls
-    /// (see SCENE_HIERARCHY.md) to get the "tink / whoooom / BOOM / bzzt" feedback
-    /// described in the design doc.
+    /// Central SFX player. Play(id) covers the fixed system sounds in SfxId; PlayClip(clip)
+    /// plays an arbitrary AudioClip on demand, used for each spell's own castSfx/impactSfx.
     /// </summary>
     public class AudioManager : MonoBehaviour
     {
@@ -39,6 +41,11 @@ namespace Spellbound.Core
         {
             if (_map != null && _map.TryGetValue(id, out var clip) && clip != null)
                 sfxSource.PlayOneShot(clip);
+        }
+
+        public void PlayClip(AudioClip clip)
+        {
+            if (clip != null) sfxSource.PlayOneShot(clip);
         }
     }
 }

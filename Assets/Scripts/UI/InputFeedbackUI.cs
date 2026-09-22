@@ -19,6 +19,8 @@ namespace Spellbound.UI
 
         void OnEnable()
         {
+            if (currentSequenceText != null) currentSequenceText.text = "";
+            if (feedbackText != null) feedbackText.text = "";
             spellCaster.OnSequenceChanged += UpdateSequenceText;
             spellCaster.OnSpellCast += HandleCast;
             spellCaster.OnMiscast += HandleMiscast;

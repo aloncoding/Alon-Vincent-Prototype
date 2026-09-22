@@ -11,21 +11,34 @@ namespace Spellbound.Enemies
     /// A single spawned monster. Walks left along its lane toward the tower, can be
     /// damaged or slowed by spells, and either dies to spell damage or reaches the tower
     /// and deals damage there. Either way it reports back to WaveManager so waves know
-    /// when they're clear.
+    /// when they're clear. Needs a Collider2D (Is Trigger checked) so Projectile can
+    /// detect hits, and a SpriteRenderer for the hit-flash feedback.
     /// </summary>
+    [RequireComponent(typeof(Collider2D))]
     public class Enemy : MonoBehaviour
     {
         public EnemyData data;
         public int laneIndex;
+
+        [Header("Hit Feedback")]
+        [SerializeField] private Color hitFlashColor = Color.white;
+        [SerializeField] private float hitFlashDuration = 0.08f;
 
         private float _currentHP;
         private float _currentSpeed;
         private Lane _lane;
         private float _spawnTime;
         private Coroutine _slowRoutine;
+        private Coroutine _flashRoutine;
+        private SpriteRenderer _spriteRenderer;
 
         /// Distance remaining to the tower point, used to sort "frontmost" enemies for targeting.
         public float DistanceToTower { get; private set; }
+
+        void Awake()
+        {
+            _spriteRenderer = GetComponent<SpriteRenderer>();
+        }
 
         public void Initialize(EnemyData enemyData, Lane lane)
         {
@@ -58,7 +71,14 @@ namespace Spellbound.Enemies
         public void TakeDamage(float amount)
         {
             _currentHP -= amount;
-            if (_currentHP <= 0f) Die();
+
+            if (_currentHP <= 0f)
+            {
+                Die();
+                return;
+            }
+
+            FlashHit();
         }
 
         public void ApplySlow(float factor, float duration)
@@ -74,14 +94,26 @@ namespace Spellbound.Enemies
             _currentSpeed = data.moveSpeed;
         }
 
+        void FlashHit()
+        {
+            if (_spriteRenderer == null) return;
+            if (_flashRoutine != null) StopCoroutine(_flashRoutine);
+            _flashRoutine = StartCoroutine(FlashRoutine());
+        }
+
+        IEnumerator FlashRoutine()
+        {
+            Color original = _spriteRenderer.color;
+            _spriteRenderer.color = hitFlashColor;
+            yield return new WaitForSeconds(hitFlashDuration);
+            _spriteRenderer.color = original;
+        }
+
         void Die()
         {
             ScoreManager.Instance?.RegisterKill(this, Time.time - _spawnTime);
             _lane.Unregister(this);
             WaveManager.Instance?.NotifyEnemyRemoved();
-
-            //add audio for death!!!
-            
             Destroy(gameObject);
         }
 

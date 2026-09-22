@@ -8,12 +8,12 @@ namespace Spellbound.Spells
         MultiTarget,    // e.g. Lightning - hits several enemies in the lane
         AreaOfEffect,   // e.g. Meteor - hits every enemy in the lane
         Slow,           // e.g. Freeze - slows every enemy in the lane
-        Heal            // e.g. Heal - restores tower HP, no lane targeting needed
+        Heal            // e.g. Heal - restores tower HP, no lane targeting/projectile needed
     }
 
     /// <summary>
-    /// Data-only definition of a spell: its Morse-style input sequence and what it does
-    /// when successfully cast. Create one asset per spell via
+    /// Data-only definition of a spell: its Morse-style input sequence, its projectile,
+    /// and what it does on impact. Create one asset per spell via
     /// Assets > Create > Spellbound > Spell.
     /// </summary>
     [CreateAssetMenu(fileName = "NewSpell", menuName = "Spellbound/Spell")]
@@ -36,10 +36,20 @@ namespace Spellbound.Spells
         [Tooltip("Used by Heal: tower HP restored.")]
         public float healAmount = 20f;
 
-        [Header("Presentation")]
-        public Sprite icon;
+        [Header("Cast Feedback (played the instant the spell fires from the wizard)")]
         public AudioClip castSfx;
         public GameObject castVfxPrefab;
+
+        [Header("Projectile & Impact (ignored by Heal, which has no projectile)")]
+        [Tooltip("Prefab with a Projectile component, Collider2D (Is Trigger) and Rigidbody2D (Kinematic).")]
+        public GameObject projectilePrefab;
+        public float projectileSpeed = 10f;
+        [Tooltip("Spawned at the point of impact - a hit flash, burst, shatter, etc.")]
+        public GameObject impactVfxPrefab;
+        public AudioClip impactSfx;
+
+        [Header("Presentation")]
+        public Sprite icon;
 
         /// Human readable dot/dash string for the spellbook UI, e.g. "• • —".
         public string MorseDisplay

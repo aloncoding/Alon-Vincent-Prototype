@@ -1,4 +1,4 @@
-using UnityEngine;
+using Spellbound.Enemies;
 using Spellbound.Lanes;
 using Spellbound.Scoring;
 using Spellbound.Tower;
@@ -6,37 +6,28 @@ using Spellbound.Tower;
 namespace Spellbound.Spells
 {
     /// <summary>
-    /// Applies a successfully-cast spell's effect to whatever lane the targeting
-    /// indicator was on the moment the cast completed.
+    /// Applies a spell's effect once its projectile has actually landed (or, for Heal,
+    /// the instant it's cast - Heal has no projectile). "impactedEnemy" is the specific
+    /// enemy a SingleTarget projectile physically collided with, if any; other effect
+    /// types ignore it and act on the whole lane instead.
     /// </summary>
     public static class SpellEffectResolver
     {
-        public static void Apply(SpellData spell, Lane lane, ScoreManager scoreManager)
+        public static void Apply(SpellData spell, Lane lane, ScoreManager scoreManager, Enemy impactedEnemy = null)
         {
-            if (spell.castVfxPrefab != null)
+            if (spell.effectType == SpellEffectType.Heal)
             {
-                // Determine a spawn position. For a lane spell, we can spawn it 
-                // at the lane's starting point, or the tower depending on your design.
-                Vector3 spawnPosition = (lane != null) ? lane.spawnPoint.position : Vector3.zero;
-
-                // Instantiate the image/VFX prefab into the game world
-                Object.Instantiate(spell.castVfxPrefab, spawnPosition, Quaternion.identity);
+                TowerHealth.Instance?.Heal(spell.healAmount);
+                scoreManager?.RegisterSuccessfulCast(spell);
+                return;
             }
 
-            // if (spell.effectType == SpellEffectType.Heal)
-            // {
-            //     TowerHealth.Instance?.Heal(spell.healAmount);
-            //     scoreManager?.RegisterSuccessfulCast(spell);
-            //     return;
-            // }
-
             if (lane == null) return;
-
 
             switch (spell.effectType)
             {
                 case SpellEffectType.SingleTarget:
-                    lane.GetFrontmostEnemy()?.TakeDamage(spell.damage);
+                    (impactedEnemy ?? lane.GetFrontmostEnemy())?.TakeDamage(spell.damage);
                     break;
 
                 case SpellEffectType.MultiTarget:

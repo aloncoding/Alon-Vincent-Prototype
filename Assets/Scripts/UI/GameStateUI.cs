@@ -4,17 +4,16 @@ using Spellbound.Core;
 namespace Spellbound.UI
 {
     /// <summary>
-    /// Shows/hides the Main Menu, HUD, Checkpoint, Game Over and Victory panels based on
-    /// GameManager's current state, and forwards button clicks back into GameManager.
+    /// Shows/hides the Countdown, HUD, and Game Over panels based on GameManager's current
+    /// state, and forwards the restart button click back into GameManager. No main menu -
+    /// the game starts straight into the countdown.
     /// </summary>
     public class GameStateUI : MonoBehaviour
     {
         public GameManager gameManager;
-        public GameObject mainMenuPanel;
+        public GameObject countdownPanel;
         public GameObject hudPanel;
-        public GameObject checkpointPanel;
         public GameObject gameOverPanel;
-        public GameObject victoryPanel;
 
         void OnEnable() => gameManager.OnStateChanged += HandleStateChanged;
         void OnDisable() { if (gameManager != null) gameManager.OnStateChanged -= HandleStateChanged; }
@@ -23,17 +22,12 @@ namespace Spellbound.UI
 
         void HandleStateChanged(GameState state)
         {
-            mainMenuPanel.SetActive(state == GameState.MainMenu);
+            countdownPanel.SetActive(state == GameState.Countdown);
             hudPanel.SetActive(state == GameState.Playing);
-            checkpointPanel.SetActive(state == GameState.CheckpointChoice);
             gameOverPanel.SetActive(state == GameState.GameOver);
-            victoryPanel.SetActive(state == GameState.Victory);
         }
 
-        // Hook these up to the corresponding UI Buttons' OnClick() in the Inspector.
-        public void OnPlayButtonPressed() => gameManager.StartGame();
+        // Hook this up to the Restart Button's OnClick() in the Inspector.
         public void OnRestartButtonPressed() => gameManager.RestartGame();
-        public void OnContinueButtonPressed() => gameManager.ContinuePastCheckpoint();
-        public void OnCashOutButtonPressed() => gameManager.CashOut();
     }
 }

@@ -1,25 +1,31 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using Spellbound.Waves;
 
 namespace Spellbound.Core
 {
-    public enum GameState { MainMenu, Playing, Paused, CheckpointChoice, GameOver, Victory }
+    public enum GameState { Countdown, Playing, GameOver }
 
     /// <summary>
-    /// Top-level game flow: starts the wave loop, listens for game-over/victory
-    /// conditions, and handles the "every 5 waves, cash out or continue" checkpoint.
+    /// Top-level game flow. No main menu: the scene starts, runs a short countdown, then
+    /// waves run endlessly (scaling up forever via WaveManager's procedural generation)
+    /// until the tower's HP reaches zero. GameOver is the only end state.
     /// </summary>
     public class GameManager : MonoBehaviour
     {
         public static GameManager Instance { get; private set; }
 
-        public GameState State { get; private set; } = GameState.MainMenu;
+        public GameState State { get; private set; } = GameState.Countdown;
         public event Action<GameState> OnStateChanged;
 
+        [Header("Countdown")]
+        [Tooltip("Seconds shown before the first wave starts, e.g. 3, 2, 1.")]
+        public int countdownSeconds = 3;
+        /// Fired once per second during the countdown with the number remaining (0 = "GO").
+        public event Action<int> OnCountdownTick;
+
         public WaveManager waveManager;
-        [Tooltip("If greater than 0, the game ends in Victory after this wave instead of running endlessly.")]
-        public int finalWaveNumber = 0;
 
         void Awake()
         {
@@ -29,39 +35,25 @@ namespace Spellbound.Core
 
         void Start()
         {
-            waveManager.OnWaveCompleted += HandleWaveCompleted;
-            waveManager.OnCheckpointReached += HandleCheckpoint;
+            SetState(GameState.Countdown);
+            StartCoroutine(CountdownThenStart());
         }
 
-        public void StartGame()
+        IEnumerator CountdownThenStart()
         {
+            for (int i = countdownSeconds; i > 0; i--)
+            {
+                OnCountdownTick?.Invoke(i);
+                yield return new WaitForSeconds(1f);
+            }
+            OnCountdownTick?.Invoke(0); // "GO"
+            yield return new WaitForSeconds(0.5f);
+
             SetState(GameState.Playing);
             waveManager.StartNextWave();
         }
-
-        void HandleWaveCompleted(int waveNumber)
-        {
-            if (finalWaveNumber > 0 && waveNumber >= finalWaveNumber)
-                Victory();
-        }
-
-        void HandleCheckpoint()
-        {
-            SetState(GameState.CheckpointChoice);
-            // UI calls ContinuePastCheckpoint() or CashOut() based on the player's choice.
-        }
-
-        public void ContinuePastCheckpoint()
-        {
-            SetState(GameState.Playing);
-            waveManager.StartNextWave();
-        }
-
-        public void CashOut() => Victory();
 
         public void GameOver() => SetState(GameState.GameOver);
-
-        public void Victory() => SetState(GameState.Victory);
 
         public void RestartGame()
         {

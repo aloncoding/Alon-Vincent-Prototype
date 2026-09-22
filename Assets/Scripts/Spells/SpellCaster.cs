@@ -15,8 +15,9 @@ namespace Spellbound.Spells
     ///   - exact match, but a longer spell could extend it -> wait briefly (commitDelay)
     ///     in case the player keeps typing toward the longer spell; otherwise commit
     ///   - valid but incomplete prefix                    -> keep waiting for more input
-    /// Whichever lane LaneManager reports as current at the instant of casting is the
-    /// lane the spell fires into - this is what ties Morse input to lane-timing strategy.
+    /// Casting spawns a Projectile on whichever lane LaneManager reports as current at that
+    /// instant; the projectile - not this script - resolves the spell's effect once it
+    /// physically reaches its target. Heal has no lane/projectile and resolves immediately.
     /// </summary>
     public class SpellCaster : MonoBehaviour
     {
@@ -84,10 +85,34 @@ namespace Spellbound.Spells
 
         void Cast(SpellData spell)
         {
-            int lane = laneManager.CurrentLaneIndex;
-            SpellEffectResolver.Apply(spell, laneManager.GetLane(lane), scoreManager);
-            OnSpellCast?.Invoke(spell, lane);
+            int laneIndex = laneManager.CurrentLaneIndex;
+
+            if (spell.effectType == SpellEffectType.Heal)
+            {
+                SpellEffectResolver.Apply(spell, null, scoreManager);
+            }
+            else
+            {
+                SpawnProjectile(spell, laneManager.GetLane(laneIndex));
+            }
+
+            OnSpellCast?.Invoke(spell, laneIndex);
             ClearSequence();
+        }
+
+        void SpawnProjectile(SpellData spell, Lane lane)
+        {
+            if (spell.projectilePrefab == null)
+            {
+                // No projectile prefab assigned yet - fall back to instant resolution so
+                // the game still functions before art/prefabs are hooked up.
+                SpellEffectResolver.Apply(spell, lane, scoreManager);
+                return;
+            }
+
+            GameObject go = Instantiate(spell.projectilePrefab, lane.towerPoint.position, Quaternion.identity);
+            Projectile projectile = go.GetComponent<Projectile>();
+            projectile.Launch(spell, lane, scoreManager);
         }
 
         void Miscast()

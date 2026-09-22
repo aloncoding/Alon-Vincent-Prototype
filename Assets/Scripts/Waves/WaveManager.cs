@@ -8,17 +8,22 @@ namespace Spellbound.Waves
 {
     /// <summary>
     /// Drives the wave loop: spawns enemies from a WaveData asset over time, waits until
-    /// every enemy in the wave is dead or has reached the tower, then either starts the
-    /// next wave automatically or - every 5 waves - raises a checkpoint so the player can
-    /// choose to cash out with a score multiplier or keep going (see GDD section 11).
+    /// every enemy in the wave is dead or has reached the tower, pauses briefly so the
+    /// player gets a breather and the "wave cleared" feedback can play, then starts the
+    /// next wave. Runs forever - the only way the game ends is the tower's HP reaching
+    /// zero (see GameManager.GameOver / TowerHealth). Uses hand-authored WaveData assets
+    /// for the first N waves, then falls back to procedurally generated ones.
     /// </summary>
     public class WaveManager : MonoBehaviour
     {
         public static WaveManager Instance { get; private set; }
 
-        [Tooltip("Hand-authored waves in order. When exhausted, waves are generated procedurally.")]
+        [Tooltip("Hand-authored waves in order. When exhausted, waves are generated procedurally forever.")]
         public WaveData[] handAuthoredWaves;
         public LaneManager laneManager;
+
+        [Tooltip("Seconds to wait after a wave is fully cleared before the next one starts.")]
+        public float interWaveDelay = 2.5f;
 
         [Header("Procedural pool (used once hand-authored waves run out)")]
         public EnemyData smallEnemy;
@@ -27,9 +32,8 @@ namespace Spellbound.Waves
 
         public int CurrentWaveNumber { get; private set; } = 0;
         public System.Action<int> OnWaveStarted;
+        /// Fired the instant a wave is fully cleared, before the inter-wave delay begins.
         public System.Action<int> OnWaveCompleted;
-        /// Raised every 5th wave instead of auto-starting the next one.
-        public System.Action OnCheckpointReached;
 
         private int _aliveEnemiesInWave;
 
@@ -71,45 +75,20 @@ namespace Spellbound.Waves
                 SpawnEnemy(entry);
             }
 
-            // Wave has no enemies at all - treat as instantly cleared.
             if (wave.spawns.Length == 0) yield return null;
 
             yield return new WaitUntil(() => _aliveEnemiesInWave <= 0);
 
             OnWaveCompleted?.Invoke(CurrentWaveNumber);
 
-            if (CurrentWaveNumber % 5 == 0)
-                OnCheckpointReached?.Invoke();
-            else
-                StartNextWave();
+            yield return new WaitForSeconds(interWaveDelay);
+
+            StartNextWave();
         }
 
         void SpawnEnemy(SpawnEntry entry)
         {
-            //
-            if (laneManager == null) 
-            {
-                Debug.LogError("laneManager is missing from WaveManager script in Inspector!");
-                return;
-            }
-            //
-
             Lane lane = laneManager.GetLane(entry.laneIndex);
-
-             // 2. Check if the retrieved lane exists
-            if (lane == null) 
-            {
-                Debug.LogError($"Lane at index {entry.laneIndex} could not be found by LaneManager!");
-                return;
-            }
-
-            // 3. Check if enemy data exists
-            if (entry.enemyData == null) 
-            {
-                Debug.LogError("EnemyData is null! Did you forget to assign small/medium/large enemies in WaveManager?");
-                return;
-            }
-
             GameObject go = Instantiate(entry.enemyData.prefab);
             Enemy enemy = go.GetComponent<Enemy>();
             enemy.Initialize(entry.enemyData, lane);
