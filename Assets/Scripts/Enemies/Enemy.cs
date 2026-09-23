@@ -114,6 +114,7 @@ namespace Spellbound.Enemies
             ScoreManager.Instance?.RegisterKill(this, Time.time - _spawnTime);
             _lane.Unregister(this);
             WaveManager.Instance?.NotifyEnemyRemoved();
+            //plays sound
             Destroy(gameObject);
         }
 
@@ -122,6 +123,7 @@ namespace Spellbound.Enemies
             TowerHealth.Instance?.TakeDamage(data.damageToTower);
             _lane.Unregister(this);
             WaveManager.Instance?.NotifyEnemyRemoved();
+            //plays sound
             Destroy(gameObject);
         }
     }

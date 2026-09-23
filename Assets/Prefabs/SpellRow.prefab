@@ -147,7 +147,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3821718441707476307}
   - component: {fileID: 6035894341599307697}
-  - component: {fileID: 7666219063925855117}
   m_Layer: 5
   m_Name: SpellRow
   m_TagString: Untagged
@@ -184,6 +183,8 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4789166434632181120}
   m_CullTransparentMesh: 1
+<<<<<<< HEAD
+=======
 --- !u!114 &7666219063925855117
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -191,7 +192,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4789166434632181120}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
@@ -214,6 +215,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+>>>>>>> 015dbb2327f770630fab9aa653f270bafd66e2aa
 --- !u!1 &5098589044064946302
 GameObject:
   m_ObjectHideFlags: 0
