@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: Meteor
   m_EditorClassIdentifier: Assembly-CSharp::Spellbound.Spells.SpellData
   spellName: Meteor
-  sequence: 01000000010000000000000000000000
-  effectType: 1
+  sequence: 0100000001000000010000000000000000000000
+  effectType: 0
   damage: 4
-  maxTargets: 4
+  pierceCount: 3
   slowFactor: 0.5
   slowDuration: 4
   healAmount: 0
