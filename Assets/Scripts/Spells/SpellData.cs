@@ -4,11 +4,9 @@ namespace Spellbound.Spells
 {
     public enum SpellEffectType
     {
-        SingleTarget,   // e.g. Fireball - high damage to the frontmost enemy in the lane
-        MultiTarget,    // e.g. Lightning - hits several enemies in the lane
-        AreaOfEffect,   // e.g. Meteor - hits every enemy in the lane
-        Slow,           // e.g. Freeze - slows every enemy in the lane
-        Heal            // e.g. Heal - restores tower HP, no lane targeting/projectile needed
+        Damage,  // hurts each enemy the projectile pierces through
+        Slow,    // slows each enemy the projectile pierces through
+        Heal     // restores tower HP, no lane targeting/projectile needed
     }
 
     /// <summary>
@@ -24,12 +22,14 @@ namespace Spellbound.Spells
         [Tooltip("The Tap/Hold sequence that casts this spell, in order.")]
         public SpellSymbol[] sequence;
 
-        public SpellEffectType effectType = SpellEffectType.SingleTarget;
+        public SpellEffectType effectType = SpellEffectType.Damage;
 
         [Header("Combat")]
         public float damage = 1f;
-        [Tooltip("Used by MultiTarget: how many enemies in the lane are hit, closest first.")]
-        public int maxTargets = 3;
+        [Tooltip("How many enemies this spell's projectile can pierce through and hit before " +
+                 "it's spent. 1 = stops at the first enemy (old 'single target'). A high number " +
+                 "effectively hits everyone in the lane (old 'area of effect').")]
+        [Min(1)] public int pierceCount = 1;
         [Tooltip("Used by Slow: fraction of speed removed. 0.5 = 50% slower.")]
         [Range(0f, 1f)] public float slowFactor = 0.5f;
         public float slowDuration = 3f;
@@ -44,7 +44,7 @@ namespace Spellbound.Spells
         [Tooltip("Prefab with a Projectile component, Collider2D (Is Trigger) and Rigidbody2D (Kinematic).")]
         public GameObject projectilePrefab;
         public float projectileSpeed = 10f;
-        [Tooltip("Spawned at the point of impact - a hit flash, burst, shatter, etc.")]
+        [Tooltip("Spawned at each enemy the projectile pierces - a hit flash, burst, shatter, etc.")]
         public GameObject impactVfxPrefab;
         public AudioClip impactSfx;
 
