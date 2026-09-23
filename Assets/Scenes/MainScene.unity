@@ -841,15 +841,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Spellbound.Core.AudioManager
   sfxEntries:
   - id: 0
-    clip: {fileID: 0}
+    clip: {fileID: 8300000, guid: a6433def831426e4997fd9332d1b822b, type: 3}
   - id: 1
-    clip: {fileID: 0}
+    clip: {fileID: 8300000, guid: 36112cbfbae3dac4281bcf5e8c9a882e, type: 3}
   - id: 2
-    clip: {fileID: 0}
+    clip: {fileID: 8300000, guid: 0678103c4e783df4d8660b10d6578a93, type: 3}
   - id: 3
-    clip: {fileID: 0}
+    clip: {fileID: 8300000, guid: c8a9888a05175504c8c5842e8cde781d, type: 3}
   - id: 4
-    clip: {fileID: 0}
+    clip: {fileID: 8300000, guid: 53882525f6203bb4e929cee8e5a6695f, type: 3}
   - id: 5
     clip: {fileID: 0}
   sfxSource: {fileID: 252389004}
@@ -3061,7 +3061,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -263, y: -222}
+  m_AnchoredPosition: {x: -263, y: -191}
   m_SizeDelta: {x: 200, y: 159.5062}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1265484383
