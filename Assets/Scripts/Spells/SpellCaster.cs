@@ -16,8 +16,8 @@ namespace Spellbound.Spells
     ///     in case the player keeps typing toward the longer spell; otherwise commit
     ///   - valid but incomplete prefix                    -> keep waiting for more input
     /// Casting spawns a Projectile on whichever lane LaneManager reports as current at that
-    /// instant; the projectile - not this script - resolves the spell's effect against
-    /// however many enemies it pierces. Heal has no lane/projectile and resolves immediately.
+    /// instant; the projectile - not this script - resolves the spell's effect once it
+    /// physically reaches its target. Heal has no lane/projectile and resolves immediately.
     /// </summary>
     public class SpellCaster : MonoBehaviour
     {
@@ -89,7 +89,7 @@ namespace Spellbound.Spells
 
             if (spell.effectType == SpellEffectType.Heal)
             {
-                SpellEffectResolver.ApplyHeal(spell, scoreManager);
+                SpellEffectResolver.Apply(spell, null, scoreManager);
             }
             else
             {
@@ -104,17 +104,9 @@ namespace Spellbound.Spells
         {
             if (spell.projectilePrefab == null)
             {
-                // No projectile prefab assigned yet - resolve instantly against as many
-                // enemies as this spell can pierce, so the game still works before
-                // art/prefabs are hooked up.
-                var targets = lane.GetEnemiesOrderedByProgress(Mathf.Max(1, spell.pierceCount));
-                bool hitAny = false;
-                foreach (var enemy in targets)
-                {
-                    SpellEffectResolver.ApplyToEnemy(spell, enemy);
-                    hitAny = true;
-                }
-                if (hitAny) scoreManager?.RegisterSuccessfulCast(spell);
+                // No projectile prefab assigned yet - fall back to instant resolution so
+                // the game still functions before art/prefabs are hooked up.
+                SpellEffectResolver.Apply(spell, lane, scoreManager);
                 return;
             }
 

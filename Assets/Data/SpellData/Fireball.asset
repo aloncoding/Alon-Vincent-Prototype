@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Spellbound.Spells.SpellData
   spellName: Fireball
   sequence: 010000000000000001000000
-  effectType: 0
+  effectType: 1
   damage: 2
-  pierceCount: 2
+  maxTargets: 2
   slowFactor: 0.5
   slowDuration: 10
   healAmount: 0
