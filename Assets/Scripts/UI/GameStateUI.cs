@@ -4,14 +4,13 @@ using Spellbound.Core;
 namespace Spellbound.UI
 {
     /// <summary>
-    /// Shows/hides the Countdown, HUD, and Game Over panels based on GameManager's current
-    /// state, and forwards the restart button click back into GameManager. No main menu -
-    /// the game starts straight into the countdown.
+    /// Shows/hides the HUD and Game Over panels based on GameManager's current state, and
+    /// forwards the restart button click back into GameManager. The game starts straight
+    /// into Playing - no menu, no countdown.
     /// </summary>
     public class GameStateUI : MonoBehaviour
     {
         public GameManager gameManager;
-        public GameObject countdownPanel;
         public GameObject hudPanel;
         public GameObject gameOverPanel;
 
@@ -22,7 +21,6 @@ namespace Spellbound.UI
 
         void HandleStateChanged(GameState state)
         {
-            countdownPanel.SetActive(state == GameState.Countdown);
             hudPanel.SetActive(state == GameState.Playing);
             gameOverPanel.SetActive(state == GameState.GameOver);
         }

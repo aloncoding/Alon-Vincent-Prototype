@@ -1,7 +1,6 @@
 using System.Collections;
-using UnityEngine;
 using TMPro;
-using UnityEngine.UI;
+using UnityEngine;
 using Spellbound.Core;
 using Spellbound.Tower;
 using Spellbound.Scoring;
@@ -10,10 +9,10 @@ using Spellbound.Waves;
 namespace Spellbound.UI
 {
     /// <summary>
-    /// Drives the always-visible HUD: tower HP bar, wave number, score, combo readout,
-    /// and a "wave cleared" moment - an SFX plus the wave text flashing a different color
-    /// a few times during WaveManager's inter-wave delay, so clearing a wave reads as an
-    /// unmistakable beat rather than a quiet number change.
+    /// Drives the always-visible HUD: tower HP (as plain text, e.g. "HP: 80/100"), wave
+    /// number, and score. A "wave cleared" moment - an SFX plus the wave text flashing a
+    /// different color a few times during WaveManager's inter-wave delay - makes clearing
+    /// a wave read as an unmistakable beat rather than a quiet number change.
     /// </summary>
     public class HUDController : MonoBehaviour
     {
@@ -21,10 +20,9 @@ namespace Spellbound.UI
         public ScoreManager scoreManager;
         public WaveManager waveManager;
 
-        public Image hpFillImage;
+        public TMP_Text hpText;
         public TMP_Text waveText;
         public TMP_Text scoreText;
-        public TMP_Text comboText;
 
         [Header("Wave Cleared Feedback")]
         public Color waveClearedColor = Color.yellow;
@@ -38,15 +36,12 @@ namespace Spellbound.UI
         void Awake()
         {
             if (waveText != null) _waveTextDefaultColor = waveText.color;
-            if (scoreText != null) scoreText.text = "SCORE 0";
-            if (comboText != null) comboText.text = "";
         }
 
         void OnEnable()
         {
             towerHealth.OnHealthChanged += UpdateHP;
             scoreManager.OnScoreChanged += UpdateScore;
-            scoreManager.OnComboChanged += UpdateCombo;
             waveManager.OnWaveStarted += UpdateWave;
             waveManager.OnWaveCompleted += HandleWaveCompleted;
         }
@@ -54,11 +49,7 @@ namespace Spellbound.UI
         void OnDisable()
         {
             if (towerHealth != null) towerHealth.OnHealthChanged -= UpdateHP;
-            if (scoreManager != null)
-            {
-                scoreManager.OnScoreChanged -= UpdateScore;
-                scoreManager.OnComboChanged -= UpdateCombo;
-            }
+            if (scoreManager != null) scoreManager.OnScoreChanged -= UpdateScore;
             if (waveManager != null)
             {
                 waveManager.OnWaveStarted -= UpdateWave;
@@ -66,9 +57,10 @@ namespace Spellbound.UI
             }
         }
 
-        void UpdateHP(float current, float max) => hpFillImage.fillAmount = current / max;
+        void UpdateHP(float current, float max) =>
+            hpText.text = $"HP: {Mathf.CeilToInt(current)}/{Mathf.CeilToInt(max)}";
+
         void UpdateScore(int score) => scoreText.text = $"SCORE {score}";
-        void UpdateCombo(int combo) => comboText.text = combo >= 3 ? $"COMBO x{1 + combo / 3}" : "";
 
         void UpdateWave(int wave)
         {
