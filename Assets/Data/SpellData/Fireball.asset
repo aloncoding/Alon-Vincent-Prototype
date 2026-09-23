@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: Fireball
   m_EditorClassIdentifier: Assembly-CSharp::Spellbound.Spells.SpellData
   spellName: Fireball
-  sequence: 000000000000000001000000
+  sequence: 010000000000000001000000
   effectType: 1
-  damage: 3
-  maxTargets: 3
+  damage: 2
+  maxTargets: 2
   slowFactor: 0.5
   slowDuration: 10
   healAmount: 0
