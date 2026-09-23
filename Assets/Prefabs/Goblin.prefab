@@ -106,6 +106,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Spellbound.Enemies.Enemy
   data: {fileID: 0}
+  damageParticles: {fileID: 1678886543446067570, guid: 8d23869658a96f6498a11eed0950a861, type: 3}
   laneIndex: 0
   hitFlashColor: {r: 1, g: 1, b: 1, a: 1}
   hitFlashDuration: 0.08

@@ -4,6 +4,7 @@ using Spellbound.Lanes;
 using Spellbound.Scoring;
 using Spellbound.Tower;
 using Spellbound.Waves;
+using Spellbound.Core; 
 
 namespace Spellbound.Enemies
 {
@@ -18,6 +19,7 @@ namespace Spellbound.Enemies
     public class Enemy : MonoBehaviour
     {
         public EnemyData data;
+        public ParticleSystem damageParticles;
         public int laneIndex;
 
         [Header("Hit Feedback")]
@@ -31,6 +33,7 @@ namespace Spellbound.Enemies
         private Coroutine _slowRoutine;
         private Coroutine _flashRoutine;
         private SpriteRenderer _spriteRenderer;
+        private ParticleSystem damageParticlesInstance;
 
         /// Distance remaining to the tower point, used to sort "frontmost" enemies for targeting.
         public float DistanceToTower { get; private set; }
@@ -70,10 +73,15 @@ namespace Spellbound.Enemies
 
         public void TakeDamage(float amount)
         {
+
             _currentHP -= amount;
+
+            SpawnDamageParticles();
 
             if (_currentHP <= 0f)
             {
+                //add the audio
+                AudioManager.Instance.Play(SfxId.EnemyDeath);
                 Die();
                 return;
             }
@@ -124,7 +132,13 @@ namespace Spellbound.Enemies
             _lane.Unregister(this);
             WaveManager.Instance?.NotifyEnemyRemoved();
             //plays sound
+            AudioManager.Instance.Play(SfxId.TowerHit);
             Destroy(gameObject);
+        }
+
+        private void SpawnDamageParticles()
+        {
+            damageParticlesInstance = Instantiate(damageParticles, transform.position, Quaternion.identity);
         }
     }
 }
